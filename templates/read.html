@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block container %}
+<main style="padding: 30px;">
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h2>All Books ({{ books|length }})</h2>
+        <a href="{{ url_for('create') }}" class="actionButton" style="width:auto; padding:0 16px;">+ Add New Book</a>
+    </div>
+
+    {% if books %}
+    <table style="width:100%; border-collapse:collapse; font-size:0.95em;">
+        <thead>
+            <tr style="background:#333; color:#fff; text-align:left;">
+                <th style="padding:10px;">Image</th>
+                <th style="padding:10px;">Title</th>
+                <th style="padding:10px;">Author</th>
+                <th style="padding:10px;">ISBN</th>
+                <th style="padding:10px;">Category</th>
+                <th style="padding:10px;">Price</th>
+                <th style="padding:10px;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+            <tr style="border-bottom:1px solid #ddd; {% if loop.index is odd %}background:#f9f9f9;{% endif %}">
+                <td style="padding:8px;">
+                    <img
+                        src="{{ url_for('static', filename='images/books/' + book['image']) }}"
+                        alt="{{ book['title'] }}"
+                        style="width:60px; height:auto;">
+                </td>
+                <td style="padding:8px;"><strong>{{ book['title'] }}</strong></td>
+                <td style="padding:8px;">{{ book['author'] }}</td>
+                <td style="padding:8px; font-size:0.85em; color:#555;">{{ book['isbn'] }}</td>
+                <td style="padding:8px;">{{ book['categoryName'] }}</td>
+                <td style="padding:8px;">${{ '%.2f'|format(book['price']) }}</td>
+                <td style="padding:8px; white-space:nowrap;">
+                    <a href="{{ url_for('edit', book_id=book['bookId']) }}"
+                       class="actionButton"
+                       style="width:auto; padding:4px 12px; font-size:0.85em;">Edit</a>
+                    &nbsp;
+                    <a href="{{ url_for('delete', book_id=book['bookId']) }}"
+                       class="actionButton"
+                       style="width:auto; padding:4px 12px; font-size:0.85em; background:#cc2233;"
+                       onclick="return confirm('Delete \'{{ book['title'] }}\'?')">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p style="color:#888;">No books found. <a href="{{ url_for('create') }}">Add the first one!</a></p>
+    {% endif %}
+
+</main>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block container %}
+<main style="padding:40px; max-width:620px; margin:auto;">
+
+    <h2>Edit Book</h2>
+
+    <form method="POST" action="{{ url_for('edit_post', book_id=book['bookId']) }}">
+
+        <label>Title:</label><br>
+        <input type="text" name="title" value="{{ book['title'] }}" required
+               style="width:100%; padding:6px; margin-bottom:14px; box-sizing:border-box;"><br>
+
+        <label>Author:</label><br>
+        <input type="text" name="author" value="{{ book['author'] }}" required
+               style="width:100%; padding:6px; margin-bottom:14px; box-sizing:border-box;"><br>
+
+        <label>ISBN:</label><br>
+        <input type="text" name="isbn" value="{{ book['isbn'] }}" required
+               style="width:100%; padding:6px; margin-bottom:14px; box-sizing:border-box;"><br>
+
+        <label>Price:</label><br>
+        <input type="number" step="0.01" min="0" name="price" value="{{ book['price'] }}" required
+               style="width:100%; padding:6px; margin-bottom:14px; box-sizing:border-box;"><br>
+
+        <label>Category:</label><br>
+        <select name="categoryId" required style="width:100%; padding:6px; margin-bottom:14px; box-sizing:border-box;">
+            {% for cat in categories %}
+                <option value="{{ cat['categoryId'] }}"
+                    {% if cat['categoryId'] == book['categoryId'] %}selected{% endif %}>
+                    {{ cat['categoryName'] }}
+                </option>
+            {% endfor %}
+        </select><br>
+
+        <label>Image Filename:</label><br>
+        <input type="text" name="image" value="{{ book['image'] }}" required
+               style="width:100%; padding:6px; margin-bottom:14px; box-sizing:border-box;"><br>
+
+        <label>Read Now:</label><br>
+        <select name="readNow" style="width:100%; padding:6px; margin-bottom:20px; box-sizing:border-box;">
+            <option value="0" {% if book['readNow'] == 0 %}selected{% endif %}>No</option>
+            <option value="1" {% if book['readNow'] == 1 %}selected{% endif %}>Yes</option>
+        </select><br>
+
+        <button type="submit" class="actionButton" style="width:auto; padding:0 20px;">Save Changes</button>
+        &nbsp;
+        <a href="{{ url_for('read') }}" class="actionButton"
+           style="width:auto; padding:0 20px; background:#888;">Cancel</a>
+
+    </form>
+
+</main>
+{% endblock %}
